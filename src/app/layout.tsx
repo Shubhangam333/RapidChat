@@ -3,6 +3,7 @@ import "./globals.css";
 import ThemeProvider from "@/providers/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 import LayoutProvider from "@/providers/layout-provider";
+import ReduxProvider from "@/providers/redux-provider";
 
 export const metadata: Metadata = {
   title: "Rapid Chat",
@@ -19,7 +20,9 @@ export default function RootLayout({
       <html lang="en">
         <body>
           <ThemeProvider>
-            <LayoutProvider>{children}</LayoutProvider>
+            <ReduxProvider>
+              <LayoutProvider>{children}</LayoutProvider>
+            </ReduxProvider>
           </ThemeProvider>
         </body>
       </html>
