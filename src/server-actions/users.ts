@@ -1,3 +1,4 @@
+"use server";
 import { connectDB } from "@/config/db-config";
 import UserModel from "@/models/user-model";
 import { currentUser } from "@clerk/nextjs";
@@ -7,7 +8,6 @@ connectDB();
 export const GetCurrentUserFromMongoDB = async () => {
   try {
     const clerkUser = await currentUser();
-    //check if  the user is already in the database based on clerkUserId
     const mongoUser = await UserModel.findOne({ clerkUserId: clerkUser?.id });
     if (mongoUser) {
       return JSON.parse(JSON.stringify(mongoUser));
