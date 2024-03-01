@@ -1,3 +1,4 @@
+import { UserType } from "@/interfaces";
 import { createSlice } from "@reduxjs/toolkit";
 
 const userSlice = createSlice({
@@ -19,3 +20,8 @@ const userSlice = createSlice({
 export const { setCurrentUser, setCurrentUserId } = userSlice.actions;
 
 export default userSlice;
+
+export interface UserState {
+  currentUserData: UserType | null;
+  currentUserId: string;
+}
