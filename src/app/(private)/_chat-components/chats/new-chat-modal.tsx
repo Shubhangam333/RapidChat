@@ -1,10 +1,11 @@
-import { ChatType, UserType } from "@/interfaces";
+import { UserType } from "@/interfaces";
+import { ChatState, setChats } from "@/redux/chatSlice";
 import { UserState } from "@/redux/userSlice";
 import { CreateNewChat } from "@/server-actions/chat";
 import { GetAllUsers } from "@/server-actions/users";
 import { Button, Divider, Modal, Spin, message } from "antd";
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 function NewChatModal({
   showNewChatModal,
@@ -19,7 +20,8 @@ function NewChatModal({
     null
   );
 
-  const { chats }: ChatType = useSelector((state: any) => state.chat);
+  const { chats }: ChatState = useSelector((state: any) => state.chat);
+  const dispatch = useDispatch();
 
   const { currentUserData }: UserState = useSelector(
     (state: any) => state.user
@@ -53,6 +55,7 @@ function NewChatModal({
         throw new Error(response.error);
       }
       message.success("Chat created Successfully.");
+      dispatch(setChats(response));
       setShowNewChatModal(false);
     } catch (error: any) {
       message.error(error.message);

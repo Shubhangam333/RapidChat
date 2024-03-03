@@ -17,6 +17,6 @@ export const { setChats } = chatSlice.actions;
 
 export default chatSlice;
 
-export interface chatState {
+export interface ChatState {
   chats: ChatType[];
 }
