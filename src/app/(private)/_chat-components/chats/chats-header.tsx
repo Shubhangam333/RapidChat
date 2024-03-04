@@ -26,7 +26,7 @@ function ChatsHeader() {
       <input
         type="text"
         placeholder="Search chats...."
-        className="bg-gray-100 w-full border border-gray-300 rounded-md px-3 border-solid h-14 outline-none focus:border-primary focus:outline-none"
+        className="bg-blue-100/30 w-full border border-gray-300 rounded-md px-3 border-solid h-14 outline-none focus:border-primary focus:outline-none"
       />
 
       {showNewChatModal && (

@@ -2,7 +2,7 @@
 import { ChatState, setChats } from "@/redux/chatSlice";
 import { UserState } from "@/redux/userSlice";
 import { GetAllChats } from "@/server-actions/chat";
-import { message } from "antd";
+import { Spin, message } from "antd";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ChatCard from "./chat-card";
@@ -32,15 +32,28 @@ function ChatsList() {
   };
 
   useEffect(() => {
-    getChats();
+    if (currentUserData) {
+      getChats();
+    }
   }, [currentUserData]);
   return (
     <div>
-      <div className="flex flex-col gap-5 mt-5">
-        {chats.map((chat) => {
-          return <ChatCard chat={chat} key={chat._id} />;
-        })}
-      </div>
+      {chats.length > 0 && (
+        <div className="flex flex-col gap-5 mt-5">
+          {chats.map((chat) => {
+            return <ChatCard chat={chat} key={chat._id} />;
+          })}
+        </div>
+      )}
+
+      {loading && (
+        <div className="flex items-center justify-center mt-32">
+          <div className="flex flex-col">
+            <Spin />
+            <span className="text-gtay-500 text-sm my-5">Loading chats...</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
