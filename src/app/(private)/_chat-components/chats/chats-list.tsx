@@ -50,7 +50,7 @@ function ChatsList() {
         <div className="flex items-center justify-center mt-32">
           <div className="flex flex-col">
             <Spin />
-            <span className="text-gtay-500 text-sm my-5">Loading chats...</span>
+            <span className="text-gray-500 text-sm my-5">Loading chats...</span>
           </div>
         </div>
       )}

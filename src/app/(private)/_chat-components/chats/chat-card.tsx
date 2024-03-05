@@ -22,7 +22,7 @@ function ChatCard({ chat }: { chat: ChatType }) {
     chatImage = chat.groupProfilePicture;
   } else {
     const recipient = chat.users.find(
-      (user) => user._id === currentUserData?._id
+      (user) => user._id !== currentUserData?._id
     );
     chatName = recipient?.name!;
     chatImage = recipient?.profilePicture!;
