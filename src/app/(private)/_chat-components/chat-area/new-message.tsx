@@ -2,7 +2,7 @@ import { ChatState } from "@/redux/chatSlice";
 import { UserState } from "@/redux/userSlice";
 import { SendNewMessage } from "@/server-actions/messages";
 import { Button, message } from "antd";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
 function NewMessage() {
@@ -11,8 +11,10 @@ function NewMessage() {
   const { currentUserData }: UserState = useSelector(
     (state: any) => state.user
   );
+  const InputRef = useRef<HTMLInputElement>(null);
   const onSend = async () => {
     try {
+      if (!text) return;
       const dBpayload = {
         text,
         image: "",
@@ -36,6 +38,12 @@ function NewMessage() {
           placeholder="Type a message"
           className="w-full border border-solid border-gray-300 focus:outline-none focus:border-gray-500 h-[45px] px-5"
           onChange={(e) => setText(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              onSend();
+            }
+          }}
+          ref={InputRef}
         />
       </div>
       <Button type="primary" onClick={onSend}>

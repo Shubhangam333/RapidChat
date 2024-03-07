@@ -31,7 +31,7 @@ function Messages() {
     getMessages();
   }, [selectedChat]);
   return (
-    <div className="flex-1 p-3">
+    <div className="flex-1 p-3 overflow-y-scroll">
       <div className="flex flex-col gap-3">
         {messages.map((message) => {
           return <Message key={message._id} message={message} />;

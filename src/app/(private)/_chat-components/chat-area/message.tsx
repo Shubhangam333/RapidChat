@@ -17,7 +17,7 @@ function Message({ message }: { message: MessageType }) {
     return (
       <div className="flex justify-end gap-2">
         <div className="flex flex-col gap-0">
-          <p className="bg-primary text-white py-1 px-7 rounded-xl rounded-tl-none m-0">
+          <p className="bg-primary text-white py-1 px-7 rounded-xl rounded-tl-none m-0 text-sm">
             {message.text}
           </p>
           <span className="text-gray-500 text-xs">
@@ -44,7 +44,7 @@ function Message({ message }: { message: MessageType }) {
             <span className="text-blue-500 text-xs font-semibold">
               {message.sender.name}
             </span>
-            <p className=" text-black   m-0 pt-1">{message.text}</p>
+            <p className=" text-black   m-0 pt-1 text-sm">{message.text}</p>
           </div>
           <span className="text-gray-500 text-xs">
             {formatDateTime(message.createdAt)}

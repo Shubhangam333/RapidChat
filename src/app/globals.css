@@ -24,3 +24,15 @@ body {
 .cl-signUp-start {
   width: 450px !important;
 }
+
+/* webkit scroll styling */
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #e2e2e2;
+}
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
