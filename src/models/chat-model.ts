@@ -46,6 +46,6 @@ if (mongoose.models && mongoose.models["chats"]) {
   mongoose.deleteModel("chats");
 }
 
-const ChatModel = mongoose.model("chats", chatSchema);
+const ChatModel = mongoose.models.chats || mongoose.model("chats", chatSchema);
 
 export default ChatModel;

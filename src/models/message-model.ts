@@ -23,6 +23,7 @@ const messageSchema = new mongoose.Schema(
     readBy: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "users",
+      default: [],
     },
   },
   { timestamps: true }
@@ -32,6 +33,7 @@ if (mongoose.models && mongoose.models["messages"]) {
   mongoose.deleteModel("messages");
 }
 
-const MessageModel = mongoose.model("messages", messageSchema);
+const MessageModel =
+  mongoose.models.messages || mongoose.model("messages", messageSchema);
 
 export default MessageModel;

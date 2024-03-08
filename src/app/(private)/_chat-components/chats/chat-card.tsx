@@ -39,6 +39,20 @@ function ChatCard({ chat }: { chat: ChatType }) {
   }
 
   const isSelected = selectedChat?._id === chat?._id;
+
+  const unreadCounts = () => {
+    if (!chat.unreadCounts || !chat.unreadCounts[currentUserData?._id!]) {
+      return null;
+    }
+
+    return (
+      <div className="bg-green-700 h-5 w-5 rounded-full flex justify-center items-center">
+        <span className="text-white text-xs">
+          {chat.unreadCounts[currentUserData?._id!]}
+        </span>
+      </div>
+    );
+  };
   return (
     <div
       className={`flex justify-between hover:bg-gray-200 py-3 px-2 rounded cursor-pointer ${
@@ -61,6 +75,7 @@ function ChatCard({ chat }: { chat: ChatType }) {
       </div>
 
       <div>
+        {unreadCounts()}
         <span className="text-xs text-gray-500">{lastMessageTime}</span>
       </div>
     </div>
