@@ -2,16 +2,22 @@
 import { Dropdown, MenuProps } from "antd";
 import React, { useState } from "react";
 import NewChatModal from "./new-chat-modal";
+import { useRouter } from "next/navigation";
 
 function ChatsHeader() {
   const [showNewChatModal, setShowNewChatModal] = useState(false);
+  const router = useRouter();
   const items: MenuProps["items"] = [
     {
       label: "New Chat",
       key: "1",
       onClick: () => setShowNewChatModal(true),
     },
-    { label: "New Group", key: "2" },
+    {
+      label: "New Group",
+      key: "2",
+      onClick: () => router.push("/groups/create-group"),
+    },
   ];
   return (
     <div>

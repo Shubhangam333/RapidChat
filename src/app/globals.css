@@ -36,3 +36,12 @@ body {
 ::-webkit-scrollbar-thumb {
   background: #888;
 }
+
+input {
+  border: 1px solid #cecece !important;
+  height: 45px;
+}
+
+textarea {
+  min-height: 100px;
+}
