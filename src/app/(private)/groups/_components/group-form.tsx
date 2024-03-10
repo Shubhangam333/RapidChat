@@ -1,18 +1,50 @@
 "use client";
+import { UploadImageToFireBaseAndReturnURL } from "@/helpers/image-upload";
 import { UserType } from "@/interfaces";
 import { UserState } from "@/redux/userSlice";
-import { Button, Form, Input, Upload } from "antd";
+import { CreateNewChat } from "@/server-actions/chat";
+import { Button, Form, Input, Upload, message } from "antd";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
 function GroupForm({ users }: { users: UserType[] }) {
+  const router = useRouter();
   const [selectedUserIds = [], setSelectedUserIds] = useState<string[]>([]);
   const [selectedProfilePicture, setSelectedProfilePicture] = useState<File>();
+  const [loading, setLoading] = useState(false);
   const { currentUserData }: UserState = useSelector(
     (state: any) => state.user
   );
 
-  const onFinish = (values: any) => {};
+  const onFinish = async (values: any) => {
+    try {
+      setLoading(true);
+      const payload = {
+        groupName: values.groupName,
+        groupBio: values.groupDescription,
+        users: [...selectedUserIds, currentUserData?._id!],
+        createdBy: currentUserData?._id!,
+        isGroupChat: true,
+        groupProfilePiture: "",
+      };
+
+      if (selectedProfilePicture) {
+        payload.groupProfilePiture = await UploadImageToFireBaseAndReturnURL(
+          selectedProfilePicture
+        );
+      }
+
+      const response = await CreateNewChat(payload);
+      if (response.error) throw new Error(response.error);
+      message.success("Group created successfully.");
+      router.refresh();
+      router.push("/");
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="grid grid-cols-2">
       <div className="flex flex-col gap-5">
@@ -73,7 +105,7 @@ function GroupForm({ users }: { users: UserType[] }) {
 
           <div className="flex justify-end gap-5">
             <Button>Cancel</Button>
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" htmlType="submit" loading={loading}>
               Create Group
             </Button>
           </div>
