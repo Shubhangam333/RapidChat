@@ -2,20 +2,31 @@
 import { UploadImageToFireBaseAndReturnURL } from "@/helpers/image-upload";
 import { UserType } from "@/interfaces";
 import { UserState } from "@/redux/userSlice";
-import { CreateNewChat } from "@/server-actions/chat";
+import { CreateNewChat, UpdateChat } from "@/server-actions/chat";
 import { Button, Form, Input, Upload, message } from "antd";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
-function GroupForm({ users }: { users: UserType[] }) {
+function GroupForm({
+  users,
+  initialData = null,
+}: {
+  users: UserType[];
+  initialData?: any;
+}) {
   const router = useRouter();
-  const [selectedUserIds = [], setSelectedUserIds] = useState<string[]>([]);
-  const [selectedProfilePicture, setSelectedProfilePicture] = useState<File>();
-  const [loading, setLoading] = useState(false);
   const { currentUserData }: UserState = useSelector(
     (state: any) => state.user
   );
+
+  const [selectedUserIds = [], setSelectedUserIds] = useState<string[]>(
+    initialData.users.filter(
+      (userId: string) => userId !== currentUserData?._id!
+    ) || []
+  );
+  const [selectedProfilePicture, setSelectedProfilePicture] = useState<File>();
+  const [loading, setLoading] = useState(false);
 
   const onFinish = async (values: any) => {
     try {
@@ -26,18 +37,30 @@ function GroupForm({ users }: { users: UserType[] }) {
         users: [...selectedUserIds, currentUserData?._id!],
         createdBy: currentUserData?._id!,
         isGroupChat: true,
-        groupProfilePiture: "",
+        groupProfilePicture: initialData?.groupProfilePicture || "",
       };
 
       if (selectedProfilePicture) {
-        payload.groupProfilePiture = await UploadImageToFireBaseAndReturnURL(
+        payload.groupProfilePicture = await UploadImageToFireBaseAndReturnURL(
           selectedProfilePicture
         );
       }
+      let response: any = null;
+      if (initialData) {
+        response = await UpdateChat({
+          chatId: initialData._id,
+          payload: payload,
+        });
+      } else {
+        await CreateNewChat(payload);
+      }
 
-      const response = await CreateNewChat(payload);
       if (response.error) throw new Error(response.error);
-      message.success("Group created successfully.");
+      message.success(
+        initialData
+          ? "Group updated successfully"
+          : "Group created successfully"
+      );
       router.refresh();
       router.push("/");
     } catch (error) {
@@ -81,7 +104,7 @@ function GroupForm({ users }: { users: UserType[] }) {
         })}
       </div>
       <div>
-        <Form layout="vertical" onFinish={onFinish}>
+        <Form layout="vertical" onFinish={onFinish} initialValues={initialData}>
           <Form.Item
             name="groupName"
             label="Group Name"
@@ -106,7 +129,7 @@ function GroupForm({ users }: { users: UserType[] }) {
           <div className="flex justify-end gap-5">
             <Button>Cancel</Button>
             <Button type="primary" htmlType="submit" loading={loading}>
-              Create Group
+              {initialData ? "Update Group" : "Create Group"}
             </Button>
           </div>
         </Form>
