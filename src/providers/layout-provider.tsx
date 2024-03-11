@@ -1,3 +1,4 @@
+"use client";
 import Content from "./layout-components/content";
 import Header from "./layout-components/header";
 
