@@ -1,3 +1,4 @@
+import socket from "@/config/socket-config";
 import { UploadImageToFireBaseAndReturnURL } from "@/helpers/image-upload";
 import { UserType } from "@/interfaces";
 import { UserState, setCurrentUser } from "@/redux/userSlice";
@@ -36,6 +37,7 @@ function CurrentUserInfo({
   const onLogout = async () => {
     try {
       setLoading(true);
+      socket.emit("logout", currentUserData?._id);
       await signOut();
       setShowCurrentUserInfo(false);
       message.success("Logged Out Successfully");

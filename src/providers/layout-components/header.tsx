@@ -6,7 +6,8 @@ import { useEffect, useState } from "react";
 import CurrentUserInfo from "./current-user-info";
 import { usePathname } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { UserState, setCurrentUser } from "@/redux/userSlice";
+import { UserState, setCurrentUser, setOnlineUsers } from "@/redux/userSlice";
+import socket from "@/config/socket-config";
 
 function Header() {
   const pathname = usePathname();
@@ -35,6 +36,16 @@ function Header() {
   useEffect(() => {
     getCurrentUser();
   }, []);
+
+  useEffect(() => {
+    if (currentUserData) {
+      socket.emit("join", currentUserData._id);
+    }
+
+    socket.on("online-users-updated", (onlineUsers: string[]) => {
+      dispatch(setOnlineUsers(onlineUsers));
+    });
+  }, [currentUserData]);
 
   return (
     currentUserData && (

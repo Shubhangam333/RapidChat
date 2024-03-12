@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 function ChatCard({ chat }: { chat: ChatType }) {
   const dispatch = useDispatch();
-  const { currentUserData }: UserState = useSelector(
+  const { currentUserData, onlineUsers }: UserState = useSelector(
     (state: any) => state.user
   );
 
@@ -53,6 +53,17 @@ function ChatCard({ chat }: { chat: ChatType }) {
       </div>
     );
   };
+
+  const onlineIndicator = () => {
+    if (chat.isGroupChat) return null;
+    const recipientId = chat.users.find(
+      (user) => user._id !== currentUserData?._id
+    )?._id;
+
+    if (onlineUsers.includes(recipientId!)) {
+      return <div className="w-2 h-2 rounded-full bg-green-700 "></div>;
+    }
+  };
   return (
     <div
       className={`flex justify-between hover:bg-gray-200 py-3 px-2 rounded cursor-pointer ${
@@ -67,7 +78,9 @@ function ChatCard({ chat }: { chat: ChatType }) {
           className="w-10 h-10 rounded-full"
         />
         <div className="flex flex-col gap-1">
-          <span className="text-gray-500 text-sm">{chatName}</span>
+          <span className="text-gray-500 text-sm flex gap-2 items-center">
+            {chatName} {onlineIndicator()}
+          </span>
           <span className="text-gray-500 text-sm">
             {lastMessageSenderName} {lastMessage}
           </span>
