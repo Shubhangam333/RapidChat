@@ -1,7 +1,9 @@
+import socket from "@/config/socket-config";
 import { ChatState } from "@/redux/chatSlice";
 import { UserState } from "@/redux/userSlice";
 import { SendNewMessage } from "@/server-actions/messages";
 import { Button, message } from "antd";
+import dayjs from "dayjs";
 import React, { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -15,14 +17,29 @@ function NewMessage() {
   const onSend = async () => {
     try {
       if (!text) return;
-      const dBpayload = {
+
+      const commonpayload = {
         text,
         image: "",
+        socketMessageId: dayjs().unix(),
+      };
+
+      const socketpayload = {
+        ...commonpayload,
+        sender: currentUserData,
+        chat: selectedChat,
+      };
+
+      //send message using socket
+
+      socket.emit("send-new-message", socketpayload);
+      const dBpayload = {
+        ...commonpayload,
         sender: currentUserData?._id!,
         chat: selectedChat?._id!,
       };
-      const response = await SendNewMessage(dBpayload);
-      if (response.error) throw new Error(response.error);
+      await SendNewMessage(dBpayload);
+      // if (response.error) throw new Error(response.error);
       setText("");
     } catch (error: any) {
       message.error(error.message);

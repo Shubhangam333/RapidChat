@@ -2,10 +2,14 @@ import { ChatState } from "@/redux/chatSlice";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import RecipientInfo from "./recipient-info";
+import { UserState } from "@/redux/userSlice";
 
 function Recipient() {
   const [showRecipientInfo, setShowRecipientInfo] = useState<boolean>(false);
   const { selectedChat }: ChatState = useSelector((state: any) => state.chat);
+  const { currentUserData }: UserState = useSelector(
+    (state: any) => state.user
+  );
 
   let chatName = "";
   let chatImage = "";
@@ -15,7 +19,7 @@ function Recipient() {
     chatImage = selectedChat.groupProfilePicture;
   } else {
     const recipient = selectedChat?.users.find(
-      (user) => user._id !== selectedChat?._id
+      (user) => user._id !== currentUserData?._id
     );
     chatName = recipient?.name!;
     chatImage = recipient?.profilePicture!;
