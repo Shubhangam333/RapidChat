@@ -27,7 +27,7 @@ export interface ChatType {
 export interface MessageType {
   _id: string;
   socketMessageId: string;
-  Chat: ChatType;
+  chat: ChatType;
   sender: UserType;
   text: string;
   image: string;

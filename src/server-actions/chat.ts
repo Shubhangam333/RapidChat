@@ -10,7 +10,15 @@ export const CreateNewChat = async (payload: any) => {
       },
     })
       .populate("users")
-      .sort({ updatedAt: -1 });
+      .sort({ updatedAt: -1 })
+      .populate("lastMessage")
+      .populate("createdBy")
+      .populate({
+        path: "lastMessage",
+        populate: {
+          path: "sender",
+        },
+      });
     return JSON.parse(JSON.stringify(newChats));
   } catch (error: any) {
     return {
@@ -35,7 +43,7 @@ export const GetAllChats = async (userId: string) => {
           path: "sender",
         },
       })
-      .sort({ updatedAt: -1 });
+      .sort({ lastMessageAt: -1 });
     return JSON.parse(JSON.stringify(users));
   } catch (error: any) {
     return {

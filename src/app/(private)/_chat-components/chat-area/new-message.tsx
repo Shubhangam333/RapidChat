@@ -4,7 +4,7 @@ import { UserState } from "@/redux/userSlice";
 import { SendNewMessage } from "@/server-actions/messages";
 import { Button, message } from "antd";
 import dayjs from "dayjs";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
 function NewMessage() {
@@ -22,6 +22,8 @@ function NewMessage() {
         text,
         image: "",
         socketMessageId: dayjs().unix(),
+        createdAt: dayjs().toISOString(),
+        updatedAt: dayjs().toISOString(),
       };
 
       const socketpayload = {
@@ -45,6 +47,13 @@ function NewMessage() {
       message.error(error.message);
     }
   };
+
+  useEffect(() => {
+    socket.emit("typing", {
+      chat: selectedChat,
+      senderId: currentUserData?._id!,
+    });
+  }, [selectedChat, text]);
   return (
     <div className="p-3 bg-gray-100 border-t border-solid border-gray-300 flex gap-5">
       <div></div>
