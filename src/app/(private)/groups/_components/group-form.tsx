@@ -21,7 +21,7 @@ function GroupForm({
   );
 
   const [selectedUserIds = [], setSelectedUserIds] = useState<string[]>(
-    initialData.users.filter(
+    initialData?.users.filter(
       (userId: string) => userId !== currentUserData?._id!
     ) || []
   );

@@ -8,6 +8,7 @@ import { ChatType } from "@/interfaces";
 
 function Recipient() {
   const [typing = false, setTyping] = useState<boolean>(false);
+  const [senderName, setSenderName] = useState<string>("");
   const [showRecipientInfo, setShowRecipientInfo] = useState<boolean>(false);
   const { selectedChat }: ChatState = useSelector((state: any) => state.chat);
   const { currentUserData }: UserState = useSelector(
@@ -31,18 +32,28 @@ function Recipient() {
   const typingAnimation = () => {
     if (typing)
       return (
-        <span className="text-green-700 font-semibold text-xs">Typing...</span>
+        <span className="text-green-700 font-semibold text-xs">
+          {selectedChat?.isGroupChat && `${senderName} is `}
+          Typing...
+        </span>
       );
   };
 
   useEffect(() => {
-    socket.on("typing", (chat: ChatType) => {
-      if (selectedChat?._id === chat._id) setTyping(true);
+    socket.on(
+      "typing",
+      ({ chat, senderName }: { chat: ChatType; senderName: string }) => {
+        if (selectedChat?._id === chat._id) setTyping(true);
 
-      setTimeout(() => {
-        setTyping(false);
-      }, 2000);
-    });
+        if (chat.isGroupChat) {
+          setSenderName(senderName);
+        }
+
+        setTimeout(() => {
+          setTyping(false);
+        }, 2000);
+      }
+    );
 
     return () => {
       socket.off("typing");
