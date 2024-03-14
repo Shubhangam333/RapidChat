@@ -37,6 +37,7 @@ function NewMessage() {
         socketMessageId: dayjs().unix(),
         createdAt: dayjs().toISOString(),
         updatedAt: dayjs().toISOString(),
+        readBy: [],
       };
 
       const socketpayload = {

@@ -13,6 +13,15 @@ function Message({ message }: { message: MessageType }) {
 
   const isLoggedInUserMessage = message.sender._id === currentUserData?._id;
 
+  let read = false;
+
+  if (
+    selectedChat &&
+    selectedChat?.users?.length - 1 === message?.readBy?.length
+  ) {
+    read = true;
+  }
+
   if (isLoggedInUserMessage) {
     return (
       <div className="flex justify-end gap-2">
@@ -29,9 +38,16 @@ function Message({ message }: { message: MessageType }) {
               className="w-40 h-40 rounded-xl rounded-tl-none"
             />
           )}
-          <span className="text-gray-500 text-xs">
-            {formatDateTime(message.createdAt)}
-          </span>
+          <div className="flex justify-between">
+            <span className="text-gray-500 text-xs">
+              {formatDateTime(message.createdAt)}
+            </span>
+            <i
+              className={`ri-check-double-line ${
+                read ? "text-blue-500" : "text-gray-400"
+              }`}
+            ></i>
+          </div>
         </div>
         <img
           src={message.sender.profilePicture}
