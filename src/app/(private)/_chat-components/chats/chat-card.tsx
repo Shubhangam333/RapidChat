@@ -29,10 +29,10 @@ function ChatCard({ chat }: { chat: ChatType }) {
     chatImage = recipient?.profilePicture!;
   }
 
-  if (chat.lastMessage) {
-    lastMessage = chat.lastMessage.text;
+  if (chat?.lastMessage) {
+    lastMessage = chat?.lastMessage?.text;
     lastMessageSenderName =
-      chat.lastMessage.sender._id === currentUserData?._id
+      chat?.lastMessage?.sender._id === currentUserData?._id
         ? "You : "
         : `${chat.lastMessage.sender.name.split(" ")[0]} : `;
     lastMessageTime = formatDateTime(chat.lastMessage.createdAt);
