@@ -7,7 +7,6 @@ export interface UserType {
   profilePicture: string;
   createdAt: string;
   updatedAt: string;
-  readBy: UserType[];
 }
 
 export interface ChatType {
@@ -32,7 +31,7 @@ export interface MessageType {
   sender: UserType;
   text: string;
   image: string;
-  readBy: UserType[];
+  readBy: string[];
   createdAt: string;
   updatedAt: string;
 }
