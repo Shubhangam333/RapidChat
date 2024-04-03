@@ -4,7 +4,7 @@ import GroupForm from "../_components/group-form";
 import { UserType } from "@/interfaces";
 
 async function CreateGroupPage() {
-  const users: UserType = await UserModel.find({});
+  const users: UserType[] = await UserModel.find({});
   return (
     <div className="p-5">
       <Link

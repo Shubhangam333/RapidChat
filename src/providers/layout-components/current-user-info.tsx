@@ -24,7 +24,7 @@ function CurrentUserInfo({
   const { signOut } = useClerk();
   const router = useRouter();
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState<Boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const getProperty = (key: string, value: string) => {
     return (
       <div className="flex flex-col">
