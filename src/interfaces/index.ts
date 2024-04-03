@@ -7,6 +7,7 @@ export interface UserType {
   profilePicture: string;
   createdAt: string;
   updatedAt: string;
+  readBy: UserType[];
 }
 
 export interface ChatType {
